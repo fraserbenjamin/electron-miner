@@ -1,0 +1,27 @@
+{
+  "name": "nsfminer",
+  "version": "1.0.0",
+  "description": "[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme)\r [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)][Gitter]",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "bindings": "~1.2.1",
+    "node-addon-api": "^1.0.0"
+  },
+  "scripts": {
+    "compile": "cmake-js compile",
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/no-fee-ethereum-mining/nsfminer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/no-fee-ethereum-mining/nsfminer/issues"
+  },
+  "homepage": "https://github.com/no-fee-ethereum-mining/nsfminer#readme"
+}

@@ -12,7 +12,9 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 endif()
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.9)
+cmake_policy(SET CMP0042 NEW)
+set (CMAKE_CXX_STANDARD 11)
 
 include(cmake/cable/bootstrap.cmake)
 
@@ -42,9 +44,9 @@ option(ETHASHCL "Build with OpenCL mining" ON)
 option(ETHASHCUDA "Build with CUDA mining" ON)
 option(ETHASHCPU "Build with CPU mining (only for development)" OFF)
 option(ETHDBUS "Build with D-Bus support" OFF)
-option(APICORE "Build with API Server support" ON)
+option(APICORE "Build with API Server support" OFF)
 option(BINKERN "Install AMD binary kernels" OFF)
-option(DEVBUILD "Log developer metrics" OFF)
+option(DEVBUILD "Log developer metrics" ON)
 
 # propagates CMake configuration options to the compiler
 function(configureProject)
@@ -127,12 +129,17 @@ endif()
 add_subdirectory(nsfminer)
 
 
-if(WIN32)
-    set(CPACK_GENERATOR ZIP)
-else()
-    set(CPACK_GENERATOR TGZ)
-endif()
-set(CPACK_PACKAGE_FILE_NAME ${PROJECT_NAME})
-set(CPACK_PACKAGE_CHECKSUM SHA256)
-set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY FALSE)
-include(CPack)
+
+# Essential library files to link to a node addon
+# You should add this line in every CMake.js based project
+#target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB})
+
+# if(WIN32)
+#     set(CPACK_GENERATOR ZIP)
+# else()
+#     set(CPACK_GENERATOR TGZ)
+# endif()
+# set(CPACK_PACKAGE_FILE_NAME ${PROJECT_NAME})
+# set(CPACK_PACKAGE_CHECKSUM SHA256)
+# set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY FALSE)
+# include(CPack)

